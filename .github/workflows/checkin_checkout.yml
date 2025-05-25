@@ -1,36 +1,28 @@
-name: Check In / Check Out
+name: Run once at 1:40 AM IST on May 26, 2025
 
 on:
   schedule:
-    - cron: '30 3 * * *'   # 9:30 AM IST — checkin
-    - cron: '0 4 * * *'  # 7:30 PM IST — checkout
+    - cron: '10 20 25 5 *'  # This means May 25 20:10 UTC = May 26 1:40 IST
   workflow_dispatch:
 
 jobs:
-  checkin:
-    if: github.event.schedule == '30 3 * * *'
+  run-script:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - run: pip install -r requirements.txt
-      - run: python main.py checkin
-        env:
-          email: ${{ secrets.email }}
-          password: ${{ secrets.password }}
 
-  checkout:
-    if: github.event.schedule == '0 4 * * *'
-    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Python 3.10
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      - run: pip install -r requirements.txt
-      - run: python main.py checkout
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run checkin script
         env:
           email: ${{ secrets.email }}
           password: ${{ secrets.password }}
+        run: python main.py checkin
