@@ -1,4 +1,4 @@
-name: Daily Checkout (Weekdays Only)
+name: Daily Checkout 
 
 on:
   schedule:
