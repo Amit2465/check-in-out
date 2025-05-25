@@ -10,7 +10,7 @@ dotenv.load_dotenv()
 action = sys.argv[1]  
 
 
-delay_seconds = random.randint(0, 1800)
+delay_seconds = random.randint(0, 600)
 time.sleep(delay_seconds) 
 
 with sync_playwright() as pw:
