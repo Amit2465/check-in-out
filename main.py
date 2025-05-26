@@ -7,8 +7,8 @@ import os
 action = sys.argv[1]  
 
 
-delay_seconds = random.randint(0, 600)
-time.sleep(delay_seconds)
+#delay_seconds = random.randint(0, 600)
+#time.sleep(delay_seconds)
 
 with sync_playwright() as pw:
     browser = pw.firefox.launch(headless=True)  
