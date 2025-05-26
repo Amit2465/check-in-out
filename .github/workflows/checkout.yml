@@ -1,8 +1,11 @@
 name: Check Out Attendance
 
 on:
+  push:
+    branches: [main]
+  workflow_dispatch:
   schedule:
-    - cron: '30 14 * * 1-5'  # 7:30 PM IST (2:00 PM UTC), Monday–Friday
+    - cron: '30 14 * * 1-5'  # Runs at 7:30 PM IST (2:00 PM UTC) Monday–Friday
 
 jobs:
   run-playwright:
@@ -28,7 +31,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y xvfb
           Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
-        # DISPLAY will be used by Playwright headless=False browser
           
       - name: Run Playwright script
         env:
@@ -36,4 +38,3 @@ jobs:
           email: ${{ secrets.email }}
           password: ${{ secrets.password }}
         run: python main.py checkout
-
