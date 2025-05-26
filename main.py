@@ -9,11 +9,13 @@ def wait(seconds=10):
 
 def log(msg):
     print(f"[LOG] {msg}")
+    
+print(f"DISPLAY env: {os.environ.get('DISPLAY')}")    
 
 action = sys.argv[1]  # "checkin" or "checkout"
 
 with sync_playwright() as pw:
-    browser = pw.firefox.launch(headless=True, slow_mo=50)
+    browser = pw.firefox.launch(headless=False, slow_mo=50)
     
     context = browser.new_context(
         permissions=["geolocation"],  # Allow geolocation permission

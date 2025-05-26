@@ -1,29 +1,39 @@
-name: Daily Checkout
+name: Check Out Attendance
 
 on:
   schedule:
-    - cron: '30 19 * * 1-5'  
-  workflow_dispatch:
+    - cron: '30 14 * * 1-5'  # 7:30 PM IST (2:00 PM UTC), Monday–Friday
 
 jobs:
-  checkout:
+  run-playwright:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.x' 
+          python-version: '3.11'
 
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Install Playwright browsers
+      - name: Install Playwright Browsers
         run: playwright install --with-deps
 
-      - name: Run checkout script
-        run: python main.py checkout
+      - name: Start Xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+          Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+        # DISPLAY will be used by Playwright headless=False browser
+          
+      - name: Run Playwright script
         env:
+          DISPLAY: :99
           email: ${{ secrets.email }}
           password: ${{ secrets.password }}
+        run: python main.py checkout
+
