@@ -13,7 +13,7 @@ def log(msg):
 action = sys.argv[1]  # "checkin" or "checkout"
 
 with sync_playwright() as pw:
-    browser = pw.firefox.launch(headless=False, slow_mo=50)
+    browser = pw.firefox.launch(headless=True, slow_mo=50)
     
     context = browser.new_context(
         permissions=["geolocation"],  # Allow geolocation permission
