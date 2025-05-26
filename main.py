@@ -14,7 +14,13 @@ action = sys.argv[1]  # "checkin" or "checkout"
 
 with sync_playwright() as pw:
     browser = pw.firefox.launch(headless=False, slow_mo=50)
-    context = browser.new_context()
+    
+    context = browser.new_context(
+        permissions=["geolocation"],  # Allow geolocation permission
+        geolocation={"latitude": 12.91189, "longitude": 77.60078},
+        locale="en-US"
+    )
+    
     page = context.new_page()
 
     try:
@@ -83,5 +89,3 @@ with sync_playwright() as pw:
         log("Process finished.")
     finally:
         browser.close()
-
-

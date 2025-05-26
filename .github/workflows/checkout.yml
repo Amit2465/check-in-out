@@ -1,0 +1,29 @@
+name: Daily Checkout
+
+on:
+  schedule:
+    - cron: '30 19 * * 1-5'  
+  workflow_dispatch:
+
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x' 
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Playwright browsers
+        run: playwright install --with-deps
+
+      - name: Run checkout script
+        run: python main.py checkout
+        env:
+          email: ${{ secrets.email }}
+          password: ${{ secrets.password }}
